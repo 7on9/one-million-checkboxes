@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:latest
+    environment:
+      - REDIS_PASSWORD=long.nguyen
+      - REDIS_PORT=6379
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis-data:/data
