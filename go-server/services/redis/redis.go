@@ -3,6 +3,7 @@ package redis
 import (
 	"context"
 	"fmt"
+	"log"
 	"os"
 	"sync"
 
@@ -29,7 +30,7 @@ func initEnv() {
 	}
 }
 
-func initRedis() {
+func InitRedisService() {
 	once.Do(func() {
 		initEnv()
 		fmt.Printf("Connecting to Redis at %s %s", redisHost, redisPassword)
@@ -41,12 +42,13 @@ func initRedis() {
 		// Optionally, you can ping the Redis server to check the connection
 		_, err := client.Ping(ctx).Result()
 		if err != nil {
+			log.Panicf("Failed to connect to Redis: %v", err)
 			panic("Failed to connect to Redis: " + err.Error())
 		}
 	})
 }
 
 func GetRedisClient() *redis.Client {
-	initRedis()
+	InitRedisService()
 	return client
 }

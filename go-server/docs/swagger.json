@@ -1,0 +1,90 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/api/v1/checkboxes/current": {
+            "get": {
+                "description": "Get the current bitset",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get the current bitset",
+                "operationId": "get-current-bitset",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.GetCurrentResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/checkboxes/update": {
+            "post": {
+                "description": "Update the bitset at a given position",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Update the bitset at a given position",
+                "operationId": "update-bitset",
+                "parameters": [
+                    {
+                        "description": "Update Request",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.GetCurrentResponse": {
+            "type": "object",
+            "properties": {
+                "bitSet": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.UpdateRequest": {
+            "type": "object",
+            "properties": {
+                "position": {
+                    "type": "integer"
+                },
+                "value": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "models.UpdateResponse": {
+            "type": "object",
+            "properties": {
+                "ok": {
+                    "type": "boolean"
+                },
+                "statusCode": {
+                    "type": "integer"
+                }
+            }
+        }
+    }
+}

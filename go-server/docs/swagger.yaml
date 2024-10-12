@@ -1,0 +1,57 @@
+definitions:
+  models.GetCurrentResponse:
+    properties:
+      bitSet:
+        type: string
+    type: object
+  models.UpdateRequest:
+    properties:
+      position:
+        type: integer
+      value:
+        type: boolean
+    type: object
+  models.UpdateResponse:
+    properties:
+      ok:
+        type: boolean
+      statusCode:
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /api/v1/checkboxes/current:
+    get:
+      description: Get the current bitset
+      operationId: get-current-bitset
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetCurrentResponse'
+      summary: Get the current bitset
+  /api/v1/checkboxes/update:
+    post:
+      consumes:
+      - application/json
+      description: Update the bitset at a given position
+      operationId: update-bitset
+      parameters:
+      - description: Update Request
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UpdateResponse'
+      summary: Update the bitset at a given position
+swagger: "2.0"
