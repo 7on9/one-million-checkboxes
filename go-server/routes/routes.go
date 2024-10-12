@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"one-million-checkboxes/middlewares"
 	"one-million-checkboxes/services"
 
 	"github.com/gin-gonic/gin"
@@ -17,10 +18,14 @@ func SetupRouter() *gin.Engine {
 	services.InitServices()
 	// r.GET("/hello/:name", getWithParams)
 
+	// Middleware
+	r.Use(middlewares.CORSMiddleware())
+
 	checkboxes := r.Group("/api/v1/checkboxes")
 	{
 		checkboxes.POST("/update", checkboxesController.UpdateBitSet)
 		checkboxes.GET("/current", checkboxesController.GetCurrentBitSet)
+		checkboxes.GET("/wipe", checkboxesController.WipeBitSet)
 	}
 
 	// Swagger

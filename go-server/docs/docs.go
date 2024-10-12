@@ -64,6 +64,24 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/api/v1/checkboxes/wipe": {
+            "get": {
+                "description": "Wipe the current bitset",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Wipe the current bitset",
+                "operationId": "wipe-bitset",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.GetCurrentResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {

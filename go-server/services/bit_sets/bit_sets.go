@@ -9,15 +9,14 @@ import (
 )
 
 const (
-	// MaxBitSetSize is the maximum size of the bitset
-	MaxBitSetSize = 1000000
-	KeyBitSet     = "CURRENT_BITSET"
+	MaxBitSetLength = 64
+	KeyBitSet       = "CURRENT_BITSET"
 )
 
 var (
 	ctx    = context.Background()
 	client = redis.GetRedisClient()
-	bs     = bitset.New(MaxBitSetSize)
+	bs     = bitset.New(MaxBitSetLength)
 )
 
 func InitBitSetsServices() {
@@ -30,20 +29,33 @@ func InitBitSetsServices() {
 	if isBitSetExist == 0 {
 		log.Println("Bitset not found in Redis")
 		// Create a new bitset
-		client.SetBit(ctx, KeyBitSet, 0, 0)
+		// client.SetBit(ctx, KeyBitSet, 0, 0)
 	} else {
 		log.Println("Bitset found in Redis")
 		// Load the bitset from Redis
-		bitfield := client.BitField(ctx, KeyBitSet, "GET", "u1", 0).Val()
-		for i, bit := range bitfield {
-			if bit == 1 {
-				bs.Set(uint(i))
-			}
-		}
+		// bitfield := client.GetBit(ctx, KeyBitSet, 0).Val()
+		// for i := 0; i < MaxBitSetSize; i++ {
+		// 	bit := client.GetBit(ctx, KeyBitSet, int64(i)).Val()
+		// 	if bit == 1 {
+		// 		bs.Set(uint(i))
+		// 	}
+		// }
+
+		// arrayGetBitCmd := make([][]string, 0)
+		// for i := 0; i < MaxBitSetSize; i++ {
+		// 	arrayGetBitCmd = append(arrayGetBitCmd, []string{"get", fmt.Sprintf("u%d", i/2), fmt.Sprintf("%d", i)})
+		// }
+		// bitFields := client.BitField(ctx, KeyBitSet, arrayGetBitCmd).Val()
+		// for i, bitField := range bitFields {
+		// 	if bitField == 1 {
+		// 		bs.Set(uint(i))
+		// 	}
+		// }
 	}
 }
 
 func GetCurrentBitSet() string {
+	log.Printf("Getting the current bitset %d \n", bs.Len())
 	return bs.DumpAsBits()
 	// return bs.String()
 }
@@ -57,4 +69,10 @@ func UpdateBitSet(bit int, value bool) {
 		bs.Clear(uint(bit))
 		client.SetBit(ctx, KeyBitSet, int64(bit), 0)
 	}
+}
+
+func WipeBitSet() {
+	log.Println("Wiping the bitset")
+	client.Del(ctx, KeyBitSet)
+	bs.ClearAll()
 }

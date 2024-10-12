@@ -54,4 +54,16 @@ paths:
           schema:
             $ref: '#/definitions/models.UpdateResponse'
       summary: Update the bitset at a given position
+  /api/v1/checkboxes/wipe:
+    get:
+      description: Wipe the current bitset
+      operationId: wipe-bitset
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetCurrentResponse'
+      summary: Wipe the current bitset
 swagger: "2.0"

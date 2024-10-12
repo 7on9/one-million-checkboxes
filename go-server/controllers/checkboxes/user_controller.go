@@ -39,3 +39,15 @@ func UpdateBitSet(c *gin.Context) {
 func GetCurrentBitSet(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"bitset": bitSets.GetCurrentBitSet()})
 }
+
+// WipeBitSet godoc
+// @Summary Wipe the current bitset
+// @Description Wipe the current bitset
+// @ID wipe-bitset
+// @Produce  json
+// @Success 200 {object} models.GetCurrentResponse
+// @Router /api/v1/checkboxes/wipe [get]
+func WipeBitSet(c *gin.Context) {
+	bitSets.WipeBitSet()
+	c.JSON(http.StatusOK, gin.H{"bitset": bitSets.GetCurrentBitSet()})
+}
